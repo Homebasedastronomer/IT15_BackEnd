@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             PostSeeder::class,
             CourseSeeder::class,
+            SubjectSeeder::class,
             StudentSeeder::class,
             SchoolDaySeeder::class,
         ]);

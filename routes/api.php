@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\SchoolDayController;
 use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\Api\SubjectController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/students', [StudentController::class, 'index']);
+    Route::post('/students', [StudentController::class, 'store']);
+    Route::get('/programs', [CourseController::class, 'programs']);
     Route::get('/courses', [CourseController::class, 'index']);
+    Route::get('/subjects', [SubjectController::class, 'index']);
     Route::get('/school-days', [SchoolDayController::class, 'index']);
 
     Route::prefix('dashboard')->group(function () {
