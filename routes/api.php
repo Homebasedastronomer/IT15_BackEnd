@@ -31,6 +31,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/students/search', [StudentController::class, 'search']);
     Route::get('/students/{studentNumber}/enrollment-history', [StudentController::class, 'enrollmentHistory']);
     Route::get('/programs', [CourseController::class, 'programs']);
+    Route::post('/programs', [CourseController::class, 'store']);
+    Route::put('/programs/{course}', [CourseController::class, 'update']);
+    Route::delete('/programs/{course}', [CourseController::class, 'destroy']);
     Route::get('/courses', [CourseController::class, 'index']);
     Route::get('/subjects', [SubjectController::class, 'index']);
     Route::get('/school-days', [SchoolDayController::class, 'index']);
