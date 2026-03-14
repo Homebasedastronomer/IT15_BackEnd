@@ -49,24 +49,32 @@ class DashboardController extends Controller
     public function courseDistribution(): JsonResponse
     {
         $distribution = Course::query()
-            ->select(['name as course', 'code as short', 'enrolled_count as students'])
-            ->orderByDesc('enrolled_count')
-            ->limit(8)
-            ->get();
+            ->withCount('students')
+            ->orderByDesc('students_count')
+            ->get()
+            ->map(fn(Course $course) => [
+                'course' => $course->name,
+                'short' => $course->code,
+                'students' => (int) $course->students_count,
+            ])
+            ->values();
 
         return response()->json($distribution);
     }
 
     public function attendanceTrend(): JsonResponse
     {
+        $startDate = Carbon::now()->startOfYear();
+        $endDate = Carbon::now()->endOfDay();
+
         $attendance = SchoolDay::query()
             ->where('is_holiday', false)
-            ->orderByDesc('school_date')
-            ->limit(30)
+            ->whereBetween('school_date', [$startDate, $endDate])
+            ->orderBy('school_date')
             ->get()
-            ->sortBy('school_date')
             ->map(fn(SchoolDay $day) => [
-                'date' => $day->school_date->format('M d'),
+                'date' => $day->school_date->format('Y-m-d'),
+                'label' => $day->school_date->format('M d'),
                 'attendance' => (float) $day->attendance_rate,
             ])
             ->values();

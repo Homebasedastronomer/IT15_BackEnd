@@ -11,7 +11,7 @@ class SubjectController extends Controller
     public function index(): JsonResponse
     {
         $subjects = Subject::query()
-            ->with('course:id,code')
+            ->with('course:id,code,name,department')
             ->orderBy('code')
             ->get()
             ->map(function (Subject $subject) {
@@ -31,6 +31,8 @@ class SubjectController extends Controller
                     'offeredIn' => $subject->offered_in,
                     'termIndicator' => $subject->term_indicator,
                     'programCode' => $subject->course?->code,
+                    'programName' => $subject->course?->name,
+                    'department' => $subject->course?->department,
                     'description' => $subject->description,
                     'prerequisites' => $subject->prerequisites ?? [],
                     'createdAt' => optional($subject->created_at)->toDateString(),
